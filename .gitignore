@@ -1,0 +1,20 @@
+##########################
+# Unreal Generated Files #
+##########################
+
+*/Intermediate/
+*/Binaries/
+*/Saved/
+*.log
+
+######################
+# VS Generated Files #
+######################
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
+*.VC.opendb
+*.suo
+*.ipch
+*/.vs
+
