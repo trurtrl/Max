@@ -21,7 +21,7 @@ void UMainMenu::NativeConstruct()
 	MenuHide();
 
 	if (ButtonMenu && !(ButtonMenu->OnPressed.IsBound()) ) 	ButtonMenu->OnPressed.AddDynamic(this, &UMainMenu::MenuShow);
-	if (ButtonMenuFileManager && !(ButtonMenuFileManager->OnReleased.IsBound()) )	ButtonMenuFileManager->OnReleased.AddDynamic(this, &UMainMenu::PrintTest);
+//	if (ButtonMenuFileManager && !(ButtonMenuFileManager->OnReleased.IsBound()) )	ButtonMenuFileManager->OnReleased.AddDynamic(this, &UMainMenu::PrintTest);
 
 	/*Menu->AddOption(MenuOptions);
 	Menu->AddOption(MenuFilemanager);
@@ -51,5 +51,5 @@ void UMainMenu::MenuHide()
 void UMainMenu::PrintTest()
 {
 	MenuHide();
-	UE_LOG(LogTemp, Warning, TEXT("Button is selected"))
+	UE_LOG(LogTemp, Warning, TEXT("Menu is hidden"))
 }

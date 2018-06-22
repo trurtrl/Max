@@ -8,6 +8,7 @@
 
 class UMainMenu;
 class USettingsMenu;
+class UMyFileManager;
 
 /**
  * 
@@ -21,17 +22,20 @@ public:
 
 	TSubclassOf<class UUserWidget> MainUIClass;
 	TSubclassOf<class UUserWidget> SettingsMenuClass;
+	TSubclassOf<class UUserWidget> FileManagerClass;
 
 	UMainMenu* MainUI = nullptr;
 	USettingsMenu* SettingsMenu = nullptr;
+	UMyFileManager* FileManager = nullptr;
 
 	ASSHUD();
 
 	virtual void BeginPlay() override;
 
 private:
-	FString CurrentFileName = "";
+
 	FString RootLocation = "/Pictures/Screenshots/";
+	FString CurrentPath = RootLocation;	//	MUST be finished with "/"
 	FString FolderName = "";
 
 	FString SetFilesLocation();
@@ -45,5 +49,6 @@ private:
 	UFUNCTION(BlueprintCallable, Category = "Screenshot")
 	void SetFolderSettings();
 	
-	
+	UFUNCTION(BlueprintCallable, Category = "Screenshot")
+	void ScanDirectory();
 };

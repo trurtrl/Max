@@ -4,6 +4,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "MainMenu.h"
 #include "SettingsMenu.h"
+#include "MyFileManager.h"
 #include "Runtime/UMG/Public/Components/Button.h"
 #include "Runtime/UMG/Public/Components/EditableTextBox.h"
 
@@ -22,6 +23,12 @@ ASSHUD::ASSHUD()
 	if (SettingsMenuClassFinder.Succeeded())
 	{
 		SettingsMenuClass = SettingsMenuClassFinder.Class;
+	}
+
+	ConstructorHelpers::FClassFinder<UUserWidget> FileManagerClassFinder(TEXT("/Game/UI/MyFileManager_BP"));
+	if (FileManagerClassFinder.Succeeded())
+	{
+		FileManagerClass = FileManagerClassFinder.Class;
 	}
 
 }
@@ -53,6 +60,14 @@ void ASSHUD::BeginPlay()
 		};
 	};
 
+	if (FileManagerClass)
+	{
+		FileManager = CreateWidget<UMyFileManager>(GetWorld(), FileManagerClass);
+		if (FileManager)
+		{
+			MainUI->ButtonMenuFileManager->OnReleased.AddDynamic(this, &ASSHUD::ScanDirectory);
+		}
+	}
 
 
 	SetFilesLocation();
@@ -60,7 +75,8 @@ void ASSHUD::BeginPlay()
 
 void ASSHUD::TakeScreenshot()
 {
-	FScreenshotRequest::RequestScreenshot(CurrentFileName, false, true);
+	FString CurrentFilePathName = CurrentPath + FolderName;
+	FScreenshotRequest::RequestScreenshot(CurrentFilePathName, false, true);
 }
 
 FString ASSHUD::SetFilesLocation()
@@ -81,7 +97,17 @@ void ASSHUD::SetFolderSettings()
 	{
 		FolderName = SettingsMenu->TextBoxFolder->GetText().ToString();
 	}
-	CurrentFileName = RootLocation + FolderName + "/" + FolderName;
-	UE_LOG(LogTemp, Warning, TEXT("FileName:%s"), *CurrentFileName);
+
+	CurrentPath = CurrentPath + FolderName + "/";
+	UE_LOG(LogTemp, Warning, TEXT("FileName:%s"), *CurrentPath);
 	SettingsMenu->Hide();
+}
+
+void ASSHUD::ScanDirectory()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Max = %i"), FileManager->GetFoundDMax())
+
+	FileManager->ScanDirectory(CurrentPath);
+//	UE_LOG(LogTemp, Warning, TEXT("Scan is finished"))
+	FileManager->PrintList();
 }
