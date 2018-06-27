@@ -17,23 +17,14 @@ class SCREENSHOTER_API USSGameInstance : public UGameInstance
 	GENERATED_BODY()
 	
 public:
-	
-	USSGameInstance();
 
-	void Temp();
+	FString GetRootLocation();
+	void SetPathToScreenshot(FString& Dir);
+	FString GetPathToScreenshot();
 
-//	UPROPERTY(EditAnywhere, Category = "UI")
-//	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
-	TSubclassOf<class UUserWidget> MainUIClass;
-
-//	UPROPERTY(VisibleAnywhere)
-	UMainMenu* MainUI = nullptr;
 
 private:
 
-	//	Class to initialize BP UserWidget
-//	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
-
-	
-
+	FString RootLocation = "/Pictures/Screenshots/";
+	FString PathToScreenshot = RootLocation;
 };

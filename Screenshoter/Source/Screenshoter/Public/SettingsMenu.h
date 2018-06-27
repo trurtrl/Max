@@ -42,10 +42,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UTextBlock* TextBlockButtonCancel = nullptr;
 
-	UFUNCTION(BlueprintCallable, Category = "Screenshot")
+	UFUNCTION(BlueprintCallable, Category = "Settings Menu")
 	void Show();
 
-	UFUNCTION(BlueprintCallable, Category = "Screenshot")
+	UFUNCTION(BlueprintCallable, Category = "Settings Menu")
 	void Hide();
 
 };

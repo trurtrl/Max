@@ -38,7 +38,7 @@ private:
 	FString CurrentPath = RootLocation;	//	MUST be finished with "/"
 	FString FolderName = "";
 
-	FString SetFilesLocation();
+
 
 	UFUNCTION(BlueprintCallable, Category = "Screenshot")
 	void TakeScreenshot();
@@ -50,5 +50,5 @@ private:
 	void SetFolderSettings();
 	
 	UFUNCTION(BlueprintCallable, Category = "Screenshot")
-	void ScanDirectory();
+	void FileManagerShow();
 };

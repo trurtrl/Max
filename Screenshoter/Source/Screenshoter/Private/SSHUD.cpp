@@ -65,12 +65,10 @@ void ASSHUD::BeginPlay()
 		FileManager = CreateWidget<UMyFileManager>(GetWorld(), FileManagerClass);
 		if (FileManager)
 		{
-			MainUI->ButtonMenuFileManager->OnReleased.AddDynamic(this, &ASSHUD::ScanDirectory);
+			MainUI->ButtonMenuFileManager->OnReleased.AddDynamic(this, &ASSHUD::FileManagerShow);
 		}
 	}
 
-
-	SetFilesLocation();
 }
 
 void ASSHUD::TakeScreenshot()
@@ -79,11 +77,7 @@ void ASSHUD::TakeScreenshot()
 	FScreenshotRequest::RequestScreenshot(CurrentFilePathName, false, true);
 }
 
-FString ASSHUD::SetFilesLocation()
-{
-	FString Path;
-	return Path;
-}
+
 
 void ASSHUD::SettingsMenuShow()
 {
@@ -103,11 +97,13 @@ void ASSHUD::SetFolderSettings()
 	SettingsMenu->Hide();
 }
 
-void ASSHUD::ScanDirectory()
+void ASSHUD::FileManagerShow()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Max = %i"), FileManager->GetFoundDMax())
+//	UE_LOG(LogTemp, Warning, TEXT("Max = %i"), FileManager->GetFoundDMax())
 
-	FileManager->ScanDirectory(CurrentPath);
-//	UE_LOG(LogTemp, Warning, TEXT("Scan is finished"))
-	FileManager->PrintList();
+	//	FileManager->ScanDirectory(CurrentPath);
+	//	FileManager->PrintList();
+
+	MainUI->MenuHide();
+	FileManager->Show();
 }
