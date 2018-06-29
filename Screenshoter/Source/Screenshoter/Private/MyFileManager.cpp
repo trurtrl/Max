@@ -7,16 +7,28 @@
 #include "Runtime/UMG/Public/Components/TextBlock.h"
 #include "Runtime/UMG/Public/Components/HorizontalBox.h"
 #include "Runtime/UMG/Public/Components/CheckBox.h"
+#include "Runtime/UMG/Public/Components/EditableTextBox.h"
 
 #include "FMItemWidget.h"
 #include "SSGameInstance.h"
+#include "UObject/ConstructorHelpers.h"
+#include "SettingsMenu.h"
 #include "Runtime/UMG/Public/Components/Border.h"
 
 
-/*UMyFileManager::UMyFileManager(const FObjectInitializer & ObjectInitializer) : Super(ObjectInitializer)
+UMyFileManager::UMyFileManager(const FObjectInitializer & ObjectInitializer) : Super(ObjectInitializer)
 {
-
-}*/
+	ConstructorHelpers::FClassFinder<USettingsMenu> SettingsMenuClassFinder(TEXT("/Game/UI/SettingsMenu_BP.SettingsMenu_BP_C"));
+	if (SettingsMenuClassFinder.Succeeded())
+	{
+		SettingsMenuClass = SettingsMenuClassFinder.Class;
+		if (SettingsMenuClass)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("SettingsMenuClass"))
+			AddDirectoryMenu = CreateWidget<USettingsMenu>(GetWorld(), SettingsMenuClass);
+		}
+	}
+}
 
 void UMyFileManager::NativeConstruct()
 {
@@ -31,9 +43,14 @@ void UMyFileManager::NativeConstruct()
 		ButtonSend->OnReleased.AddDynamic(this, &UMyFileManager::AddItem);
 	}
 
+	if (ButtonAddDirectory && !(ButtonAddDirectory->OnReleased.IsBound()))
+	{
+		ButtonAddDirectory->OnReleased.AddDynamic(this, &UMyFileManager::OpenMenuAddDirectory);
+	}
+
 	if (TextBlockButtonExit) TextBlockButtonExit->SetText(FText::FromString(NameTextBlockButtonExit));
 	if (TextBlockButtonMode) TextBlockButtonMode->SetText(FText::FromString(NameTextBlockButtonMode));
-	if (TextBlockButtonAddFolder) TextBlockButtonAddFolder->SetText(FText::FromString(NameTextBlockButtonAddFolder));
+	if (TextBlockButtonAddDirectory) TextBlockButtonAddDirectory->SetText(FText::FromString(NameTextBlockButtonAddDirectory));
 	if (TextBlockButtonSend) TextBlockButtonSend->SetText(FText::FromString(NameTextBlockButtonSend));
 }
 
@@ -215,6 +232,35 @@ void UMyFileManager::OpenPicture()
 void UMyFileManager::SetToFile(FString& ToNewFile)
 {
 	ToFile = ToNewFile;
+}
+
+void UMyFileManager::AddDirectory()
+{
+	IFileManager& FileMgr = IFileManager::Get();
+	
+	//	TODO Check on existence of a directory with a desirable name
+
+	FString NewDirName = SetNewDirectoryName();
+	FString FullName = CurrentLocation + NewDirName;
+	FileMgr.MakeDirectory(*FullName, true);
+	AddDirectoryMenu->TextBox->SetText(FText::FromString(""));
+	AddDirectoryMenu->RemoveFromViewport();
+	RebuildItems();
+}
+
+void UMyFileManager::OpenMenuAddDirectory()
+{
+	AddDirectoryMenu->AddToViewport();
+	if (!(AddDirectoryMenu->ButtonOk->OnReleased.IsBound()))
+	{
+		AddDirectoryMenu->ButtonOk->OnReleased.AddDynamic(this, &UMyFileManager::AddDirectory);	//	Change Function
+	}
+}
+
+FString UMyFileManager::SetNewDirectoryName()
+{
+//	if (AddDirectoryMenu && !(AddDirectoryMenu->TextBox.is))
+	return AddDirectoryMenu->TextBox->GetText().ToString();
 }
 
 void UMyFileManager::Show()

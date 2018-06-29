@@ -24,9 +24,13 @@ void USettingsMenu::NativeConstruct()
 		ButtonCancel->OnReleased.AddDynamic(this, &USettingsMenu::Hide);
 	};
 
-	if (TextBlockFolder) TextBlockFolder->SetText(FText::FromString(NameTextBlockFolder));
 	if (TextBlockButtonOk) TextBlockButtonOk->SetText(FText::FromString(NameTextBlockButtonOk));
 	if (TextBlockButtonCancel) TextBlockButtonCancel->SetText(FText::FromString(NameTextBlockButtonCancel));
+}
+
+void USettingsMenu::SetHeader(FString& Header)
+{
+	if (TextBlockHeader) TextBlockHeader->SetText(FText::FromString(Header));
 }
 
 void USettingsMenu::Show()

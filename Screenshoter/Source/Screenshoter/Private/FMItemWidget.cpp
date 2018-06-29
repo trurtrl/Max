@@ -16,19 +16,6 @@ UFMItemWidget::UFMItemWidget(const FObjectInitializer & ObjectInitializer) : Sup
 {
 	if (!WidgetTree) WidgetTree = NewObject <UWidgetTree> (UWidgetTree::StaticClass());
 
-	/*HorizontalBox = NewObject<UHorizontalBox>(this, UHorizontalBox::StaticClass());
-	CheckBox = NewObject<UCheckBox>(this, UCheckBox::StaticClass());
-	
-	tstText = NewObject<UTextBlock>(this, UTextBlock::StaticClass());
-	tstText->SetText(FText::FromString(TEXT("Test Button")));
-	tstBtn = NewObject<UButton>(this, UButton::StaticClass());
-	tstBtn->AddChild(tstText);
-
-	HorizontalBox->AddChild(CheckBox);
-	HorizontalBox->AddChild(tstBtn);
-
-	RootWidget->AddChild(HorizontalBox);*/
-
 }
 
 
@@ -40,24 +27,11 @@ void UFMItemWidget::NativeConstruct()
 	// Bind delegates are here
 	//	Border->OnMouseDoubleClickEvent.BindUFunction(this, "GoToDirectory");
 	Border->OnMouseButtonDownEvent.BindUFunction(this, FName("SetToFile"));
+//	Border->SetBrushColor(FLinearColor::Gray);
 }
 
 TSharedRef<SWidget> UFMItemWidget::RebuildWidget()
 {
-/*	UPanelWidget* RootWidget = Cast<UPanelWidget>(GetRootWidget());
-	if (!RootWidget)
-	{
-		RootWidget = WidgetTree->ConstructWidget<UCanvasPanel>(UCanvasPanel::StaticClass(), TEXT("Root Widget"));
-
-		UCanvasPanelSlot* RootWidgetSlot = Cast<UCanvasPanelSlot>(RootWidget->Slot);
-		if (RootWidgetSlot)
-		{
-			RootWidgetSlot->SetAnchors(FAnchors(0.f, 0.f, 1.f, 1.f));
-			RootWidgetSlot->SetOffsets(FMargin(0.f, 0.f));
-		}
-		WidgetTree->RootWidget = RootWidget;
-	}*/
-
 	RootWidgetHorizBox = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass(), TEXT("Root Widget"));
 	WidgetTree->RootWidget = RootWidgetHorizBox;
 	
@@ -66,15 +40,11 @@ TSharedRef<SWidget> UFMItemWidget::RebuildWidget()
 
 	if (RootWidgetHorizBox)
 	{
-
 		CheckBox = NewObject<UCheckBox>(this, UCheckBox::StaticClass());
 
 		TextBlock = NewObject<UTextBlock>(this, UTextBlock::StaticClass());
-	//	Text->SetText(FText::FromString(TEXT("Test Button Test Button Test Button ")));
-		TextBlock->SetColorAndOpacity(FLinearColor::Green);
 
-//		Button = NewObject<UButton>(this, UButton::StaticClass());
-//		Button->AddChild(TextButton);
+		//TextBlock->SetColorAndOpacity(FLinearColor::Green);
 
 		Border = NewObject<UBorder>(this, UBorder::StaticClass());
 		Border->AddChild(TextBlock);

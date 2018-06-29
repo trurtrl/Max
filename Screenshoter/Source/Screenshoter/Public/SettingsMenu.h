@@ -20,17 +20,14 @@ class SCREENSHOTER_API USettingsMenu : public UUserWidget
 	
 public:
 
-	FString NameTextBlockFolder = "Set a folder's name :";
-	FString NameTextBlockButtonOk = "OK";
-	FString NameTextBlockButtonCancel = "Cancel";
-
 	virtual void NativeConstruct() override;
 
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	UTextBlock* TextBlockFolder = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	UEditableTextBox* TextBoxFolder = nullptr;
+	UTextBlock* TextBlockHeader = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UEditableTextBox* TextBox = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UButton* ButtonOk = nullptr;
@@ -42,10 +39,19 @@ public:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UTextBlock* TextBlockButtonCancel = nullptr;
 
+
+	UFUNCTION(BlueprintCallable, Category = "Settings Menu")
+	void SetHeader(FString& Header);
+
 	UFUNCTION(BlueprintCallable, Category = "Settings Menu")
 	void Show();
 
 	UFUNCTION(BlueprintCallable, Category = "Settings Menu")
 	void Hide();
+
+private:
+
+	FString NameTextBlockButtonOk = "OK";
+	FString NameTextBlockButtonCancel = "Cancel";
 
 };

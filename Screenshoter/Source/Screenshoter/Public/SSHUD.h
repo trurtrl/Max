@@ -37,7 +37,7 @@ private:
 	FString RootLocation = "/Pictures/Screenshots/";
 	FString CurrentPath = RootLocation;	//	MUST be finished with "/"
 	FString FolderName = "";
-
+	FString SettingsMenuHeader = "Set a folder's name";
 
 
 	UFUNCTION(BlueprintCallable, Category = "Screenshot")

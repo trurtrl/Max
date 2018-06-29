@@ -6,11 +6,12 @@
 #include "Blueprint/UserWidget.h"
 #include "MyFileManager.generated.h"
 
-class IFileManager;
+//class IFileManager;
 class UButton;
 class UTextBlock;
 class UScrollBox;
 class UFMItemWidget;
+class USettingsMenu;
 ///class USSGameInstance;
 
 /**
@@ -23,14 +24,18 @@ class SCREENSHOTER_API UMyFileManager : public UUserWidget
 	
 public:
 
-	///UMyFileManager(const FObjectInitializer & ObjectInitializer);
+	UMyFileManager(const FObjectInitializer & ObjectInitializer);
 	virtual TSharedRef<SWidget> RebuildWidget();
 	virtual void NativeConstruct() override;
+
+
+	TSubclassOf<class USettingsMenu> SettingsMenuClass;
+	USettingsMenu* AddDirectoryMenu = nullptr;
 
 	FString NameTextBlockPath = "";
 	FString NameTextBlockButtonExit = "X";
 	FString NameTextBlockButtonMode = "Mode";
-	FString NameTextBlockButtonAddFolder = "New Folder";
+	FString NameTextBlockButtonAddDirectory = "New Directory";
 	FString NameTextBlockButtonSend = "Send";
 	FString NameItemUp = ". .";
 
@@ -49,9 +54,9 @@ public:
 	UTextBlock* TextBlockButtonMode = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	UButton* ButtonAddFolder = nullptr;
+	UButton* ButtonAddDirectory = nullptr;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	UTextBlock* TextBlockButtonAddFolder = nullptr;
+	UTextBlock* TextBlockButtonAddDirectory = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UButton* ButtonSend = nullptr;
@@ -104,5 +109,14 @@ private:
 
 	UFUNCTION(BlueprintCallable, Category = "My File Manager")
 	void ChangeLocation();
+
+	UFUNCTION(BlueprintCallable, Category = "My File Manager")
+	void AddDirectory();
+
+	UFUNCTION(BlueprintCallable, Category = "My File Manager")
+	void OpenMenuAddDirectory();
+
+	UFUNCTION(BlueprintCallable, Category = "My File Manager")
+	FString SetNewDirectoryName();
 
 };

@@ -43,6 +43,7 @@ void ASSHUD::BeginPlay()
 		if (SettingsMenu)
 		{
 			SettingsMenu->ButtonOk->OnPressed.AddDynamic(this, &ASSHUD::SetFolderSettings);
+			SettingsMenu->SetHeader(SettingsMenuHeader);
 		};
 	};
 
@@ -87,9 +88,9 @@ void ASSHUD::SettingsMenuShow()
 
 void ASSHUD::SetFolderSettings()
 {
-	if (SettingsMenu->TextBoxFolder)
+	if (SettingsMenu->TextBox)
 	{
-		FolderName = SettingsMenu->TextBoxFolder->GetText().ToString();
+		FolderName = SettingsMenu->TextBox->GetText().ToString();
 	}
 
 	CurrentPath = CurrentPath + FolderName + "/";
