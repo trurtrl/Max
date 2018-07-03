@@ -12,7 +12,7 @@ class UTextBlock;
 class UScrollBox;
 class UFMItemWidget;
 class USettingsMenu;
-///class USSGameInstance;
+class UPictureViewer;
 
 /**
  * 
@@ -31,6 +31,8 @@ public:
 
 	TSubclassOf<class USettingsMenu> SettingsMenuClass;
 	USettingsMenu* AddDirectoryMenu = nullptr;
+
+	UPictureViewer* PictureViewer = nullptr;
 
 	FString NameTextBlockPath = "";
 	FString NameTextBlockButtonExit = "X";

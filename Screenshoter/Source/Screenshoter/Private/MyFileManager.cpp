@@ -14,6 +14,8 @@
 #include "UObject/ConstructorHelpers.h"
 #include "SettingsMenu.h"
 #include "Runtime/UMG/Public/Components/Border.h"
+#include "FMItemWidget.h"
+#include "PictureViewer.h"
 
 
 UMyFileManager::UMyFileManager(const FObjectInitializer & ObjectInitializer) : Super(ObjectInitializer)
@@ -22,11 +24,11 @@ UMyFileManager::UMyFileManager(const FObjectInitializer & ObjectInitializer) : S
 	if (SettingsMenuClassFinder.Succeeded())
 	{
 		SettingsMenuClass = SettingsMenuClassFinder.Class;
-		if (SettingsMenuClass)
+		/*if (SettingsMenuClass)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("SettingsMenuClass"))
 			AddDirectoryMenu = CreateWidget<USettingsMenu>(GetWorld(), SettingsMenuClass);
-		}
+		}*/
 	}
 }
 
@@ -60,6 +62,15 @@ TSharedRef<SWidget> UMyFileManager::RebuildWidget()
 
 	RootLocation = GetRootLocationFromGameInstance();
 	CurrentLocation = RootLocation;
+
+	if (SettingsMenuClass)
+	{
+
+		AddDirectoryMenu = CreateWidget<USettingsMenu>(GetWorld(), SettingsMenuClass);
+	}
+
+	if (!PictureViewer) PictureViewer = NewObject<UPictureViewer>(this, UPictureViewer::StaticClass());
+
 	RebuildItems();
 	
 	return Widget;	
@@ -192,6 +203,19 @@ void UMyFileManager::ChangeLocation()
 	RebuildItems();
 }
 
+void UMyFileManager::OpenPicture()
+{
+	FString FullName = CurrentLocation + ToFile;
+	UE_LOG(LogTemp, Warning, TEXT("Open File %s"), *FullName)
+	
+	if (PictureViewer)
+	{
+		PictureViewer->AddToViewport();
+		UE_LOG(LogTemp, Warning, TEXT("PictureViewer at Viewport"))
+		PictureViewer->SetImage(FullName);
+	}
+}
+
 void UMyFileManager::SetCurrentLocation()
 {
 	CurrentLocation = RootLocation;
@@ -222,11 +246,6 @@ FString UMyFileManager::GetRootLocationFromGameInstance()
 		UE_LOG(LogTemp, Warning, TEXT("SS Game Instance isn't available"))
 		return "";
 	}
-}
-
-void UMyFileManager::OpenPicture()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Open File %s"), *ToFile)
 }
 
 void UMyFileManager::SetToFile(FString& ToNewFile)
